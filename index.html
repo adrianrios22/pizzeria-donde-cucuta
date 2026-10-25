@@ -1,2517 +1,1589 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- =========================
-       CAMBIAR PARA CADA CLIENTE
-       ========================= -->
-  <title>Urban Burger | Restaurante</title>
-  <meta
-    name="description"
-    content="Hamburguesas artesanales, bebidas, entradas y mucho sabor."
-  >
-
-  <style>
-
-    /* ========================================
-       VARIABLES DE LA PLANTILLA
-       CAMBIAR COLORES AQUÍ PARA OTRO CLIENTE
-       ======================================== */
-
-    :root {
-      --fondo: #090909;
-      --fondo-2: #111111;
-      --fondo-3: #171717;
-      --tarjeta: #191919;
-
-      --principal: #f2b51d;
-      --principal-claro: #ffd45c;
-
-      --texto: #ffffff;
-      --texto-gris: #b7b7b7;
-      --borde: #292929;
-
-      --radio: 20px;
-      --ancho: 1200px;
-    }
-
-    /* ========================================
-       BASE
-       ======================================== */
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    html {
-      scroll-padding-top: 85px;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--fondo);
-      color: var(--texto);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    .contenedor {
-      width: min(92%, var(--ancho));
-      margin: auto;
-    }
-
-    section {
-      padding: 90px 0;
-    }
-
-    .mini-titulo {
-      color: var(--principal);
-      font-size: 13px;
-      letter-spacing: 2px;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .titulo-seccion {
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-    }
-
-    .titulo-seccion span {
-      color: var(--principal);
-    }
-
-    .texto-seccion {
-      color: var(--texto-gris);
-      max-width: 650px;
-      font-size: 17px;
-    }
-
-    .cabecera-seccion {
-      text-align: center;
-      margin-bottom: 45px;
-    }
-
-    .cabecera-seccion .texto-seccion {
-      margin: auto;
-    }
-
-    /* ========================================
-       BOTONES
-       ======================================== */
-
-    .boton {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 50px;
-      padding: 0 22px;
-      border-radius: 12px;
-      background: var(--principal);
-      color: #111;
-      font-weight: 900;
-      transition: .25s ease;
-    }
-
-    .boton:hover {
-      background: var(--principal-claro);
-      transform: translateY(-2px);
-    }
-
-    .boton-borde {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 50px;
-      padding: 0 22px;
-      border-radius: 12px;
-      border: 1px solid #555;
-      color: white;
-      font-weight: 800;
-      transition: .25s ease;
-    }
-
-    .boton-borde:hover {
-      border-color: var(--principal);
-      color: var(--principal);
-    }
-
-    /* ========================================
-       HEADER
-       ======================================== */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(8, 8, 8, .94);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--borde);
-    }
-
-    .nav {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      font-size: 23px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .logo-icono {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--principal);
-      color: #111;
-      font-size: 22px;
-    }
-
-    .logo span {
-      color: var(--principal);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 26px;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .nav-links a {
-      transition: .2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--principal);
-    }
-
-    .menu-movil {
-      display: none;
-      background: transparent;
-      color: white;
-      border: 0;
-      font-size: 28px;
-      cursor: pointer;
-    }
-
-    /* ========================================
-       HERO
-       ======================================== */
-
-    .hero {
-      padding: 0;
-      min-height: 720px;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(0,0,0,.96) 0%,
-          rgba(0,0,0,.87) 38%,
-          rgba(0,0,0,.44) 67%,
-          rgba(0,0,0,.20) 100%
-        ),
-        url("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=85&w=1800&auto=format&fit=crop");
-
-      background-size: cover;
-      background-position: center;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: rgba(242,181,29,.10);
-      filter: blur(100px);
-      right: -100px;
-      top: 60px;
-    }
-
-    .hero-contenido {
-      position: relative;
-      z-index: 2;
-      max-width: 660px;
-      padding: 100px 0;
-    }
-
-    .hero-etiqueta {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 14px;
-      margin-bottom: 22px;
-      border-radius: 999px;
-      border: 1px solid rgba(242,181,29,.35);
-      background: rgba(242,181,29,.08);
-      color: var(--principal);
-      font-size: 12px;
-      letter-spacing: 1.5px;
-      font-weight: 900;
-    }
-
-    .hero h1 {
-      font-size: clamp(54px, 8vw, 95px);
-      line-height: .91;
-      text-transform: uppercase;
-      letter-spacing: -4px;
-      margin-bottom: 24px;
-    }
-
-    .hero h1 span {
-      color: var(--principal);
-    }
-
-    .hero p {
-      max-width: 570px;
-      color: #d1d1d1;
-      font-size: 18px;
-      margin-bottom: 30px;
-    }
-
-    .hero-botones {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    /* ========================================
-       BENEFICIOS
-       ======================================== */
-
-    .beneficios {
-      margin-top: -42px;
-      position: relative;
-      z-index: 20;
-    }
-
-    .beneficios-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: var(--fondo-2);
-      border: 1px solid var(--borde);
-      border-radius: var(--radio);
-      overflow: hidden;
-      box-shadow: 0 25px 70px rgba(0,0,0,.35);
-    }
-
-    .beneficio {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 27px;
-      border-right: 1px solid var(--borde);
-    }
-
-    .beneficio:last-child {
-      border-right: 0;
-    }
-
-    .beneficio-icono {
-      font-size: 30px;
-    }
-
-    .beneficio h3 {
-      color: var(--principal);
-      text-transform: uppercase;
-      font-size: 14px;
-      margin-bottom: 3px;
-    }
-
-    .beneficio p {
-      color: var(--texto-gris);
-      font-size: 13px;
-    }
-
-    /* ========================================
-       CATEGORÍAS
-       ======================================== */
-
-    .categorias-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .categoria {
-      min-height: 180px;
-      background:
-        linear-gradient(145deg, #191919, #111111);
-      border: 1px solid var(--borde);
-      border-radius: 18px;
-      padding: 28px 18px;
-      text-align: center;
-      transition: .25s;
-    }
-
-    .categoria:hover {
-      border-color: var(--principal);
-      transform: translateY(-6px);
-    }
-
-    .categoria-icono {
-      font-size: 48px;
-      margin-bottom: 14px;
-    }
-
-    .categoria h3 {
-      color: var(--principal);
-      text-transform: uppercase;
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-
-    .categoria p {
-      color: var(--texto-gris);
-      font-size: 13px;
-    }
-
-    /* ========================================
-       PRODUCTOS
-       ======================================== */
-
-    .productos {
-      background: var(--fondo-2);
-    }
-
-    .productos-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .producto {
-      background: var(--tarjeta);
-      border: 1px solid var(--borde);
-      border-radius: 20px;
-      overflow: hidden;
-      transition: .25s;
-    }
-
-    .producto:hover {
-      transform: translateY(-7px);
-      border-color: var(--principal);
-    }
-
-    .producto-imagen {
-      height: 250px;
-      overflow: hidden;
-    }
-
-    .producto-imagen img {
-      height: 100%;
-      object-fit: cover;
-      transition: .35s;
-    }
-
-    .producto:hover img {
-      transform: scale(1.05);
-    }
-
-    .producto-info {
-      padding: 22px;
-    }
-
-    .producto-info h3 {
-      font-size: 20px;
-      text-transform: uppercase;
-      margin-bottom: 7px;
-    }
-
-    .producto-info p {
-      color: var(--texto-gris);
-      font-size: 14px;
-      min-height: 66px;
-    }
-
-    .producto-abajo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 16px;
-    }
-
-    .precio {
-      color: var(--principal);
-      font-size: 22px;
-      font-weight: 900;
-    }
-
-    .etiqueta-producto {
-      color: #111;
-      background: var(--principal);
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    /* ========================================
-       PROMOCIÓN
-       ======================================== */
-
-    .promo {
-      padding: 55px 0;
-    }
-
-    .promo-box {
-      background:
-        linear-gradient(120deg, #d89900, var(--principal), #ffd258);
-      color: #111;
-      border-radius: 25px;
-      padding: 45px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 30px;
-      overflow: hidden;
-    }
-
-    .promo-box h2 {
-      font-size: clamp(38px, 6vw, 65px);
-      line-height: .93;
-      text-transform: uppercase;
-      margin: 8px 0 14px;
-    }
-
-    .promo-box p {
-      font-weight: 700;
-    }
-
-    .promo-icono {
-      font-size: 120px;
-      transform: rotate(-8deg);
-    }
-
-    /* ========================================
-       NOSOTROS
-       ======================================== */
-
-    .nosotros-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 55px;
-      align-items: center;
-    }
-
-    .nosotros-img {
-      position: relative;
-    }
-
-    .nosotros-img img {
-      height: 520px;
-      object-fit: cover;
-      border-radius: 24px;
-    }
-
-    .nosotros-img::after {
-      content: "";
-      position: absolute;
-      inset: 16px -16px -16px 16px;
-      border: 2px solid var(--principal);
-      border-radius: 24px;
-      z-index: -1;
-    }
-
-    .nosotros-texto p {
-      color: var(--texto-gris);
-      margin-bottom: 22px;
-      font-size: 16px;
-    }
-
-    /* ========================================
-       INFORMACIÓN
-       ======================================== */
-
-    .info {
-      background: var(--fondo-2);
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .info-card {
-      background: var(--tarjeta);
-      border: 1px solid var(--borde);
-      border-radius: 18px;
-      padding: 28px;
-    }
-
-    .info-card .info-icono {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-
-    .info-card h3 {
-      color: var(--principal);
-      text-transform: uppercase;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .info-card p {
-      color: var(--texto-gris);
-    }
-
-    /* ========================================
-       REDES
-       ======================================== */
-
-    .redes-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 35px;
-    }
-
-    .red-social {
-      padding: 22px;
-      border-radius: 16px;
-      background: #151515;
-      border: 1px solid var(--borde);
-      text-align: center;
-      font-weight: 900;
-      transition: .25s;
-    }
-
-    .red-social:hover {
-      border-color: var(--principal);
-      color: var(--principal);
-      transform: translateY(-4px);
-    }
-
-    /* ========================================
-       FOOTER
-       ======================================== */
-
-    footer {
-      background: #050505;
-      padding: 65px 0 25px;
-      border-top: 1px solid var(--borde);
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 1fr;
-      gap: 40px;
-    }
-
-    .footer-col h3 {
-      color: var(--principal);
-      margin-bottom: 15px;
-    }
-
-    .footer-col p,
-    .footer-col a {
-      color: #909090;
-      font-size: 14px;
-      margin-bottom: 9px;
-      display: block;
-    }
-
-    .footer-col a:hover {
-      color: var(--principal);
-    }
-
-    .copyright {
-      margin-top: 45px;
-      padding-top: 20px;
-      border-top: 1px solid #1f1f1f;
-      color: #666;
-      text-align: center;
-      font-size: 13px;
-    }
-
-    /* ========================================
-       WHATSAPP
-       ======================================== */
-
-    .whatsapp-flotante {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      display: grid;
-      place-items: center;
-      background: #25d366;
-      color: white;
-      font-size: 27px;
-      font-weight: bold;
-      border-radius: 50%;
-      z-index: 900;
-      box-shadow: 0 15px 35px rgba(0,0,0,.40);
-      transition: .25s;
-    }
-
-    .whatsapp-flotante:hover {
-      transform: scale(1.07);
-    }
-
-    /* ========================================
-       RESPONSIVE TABLET
-       ======================================== */
-
-    @media (max-width: 950px) {
-
-      .nav-links {
-        position: absolute;
-        top: 78px;
-        left: 0;
-        right: 0;
-        background: #0b0b0b;
-        border-bottom: 1px solid var(--borde);
-        display: none;
-        flex-direction: column;
-        padding: 25px;
-      }
-
-      .nav-links.activo {
-        display: flex;
-      }
-
-      .menu-movil {
-        display: block;
-      }
-
-      .categorias-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .productos-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .nosotros-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-    /* ========================================
-       RESPONSIVE CELULAR
-       ======================================== */
-
-    @media (max-width: 620px) {
-
-      section {
-        padding: 70px 0;
-      }
-
-      .hero {
-        min-height: 660px;
-        background-position: 60% center;
-      }
-
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(
-            0deg,
-            rgba(0,0,0,.75),
-            transparent 45%
-          );
-      }
-
-      .hero-contenido {
-        padding: 80px 0;
-        z-index: 3;
-      }
-
-      .hero h1 {
-        font-size: 54px;
-        letter-spacing: -2px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .beneficios-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .beneficio {
-        border-right: 0;
-        border-bottom: 1px solid var(--borde);
-      }
-
-      .beneficio:last-child {
-        border-bottom: 0;
-      }
-
-      .categorias-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .productos-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .producto-imagen {
-        height: 230px;
-      }
-
-      .promo-box {
-        padding: 30px 24px;
-      }
-
-      .promo-icono {
-        display: none;
-      }
-
-      .nosotros-img img {
-        height: 380px;
-      }
-
-      .redes-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-  </style>
-</head>
-
-
-<body>
-
-  <!-- ========================================
-       HEADER
-       ======================================== -->
-
-  <header>
-
-    <div class="contenedor nav">
-
-      <!-- CAMBIAR NOMBRE DEL CLIENTE -->
-
-      <a href="#inicio" class="logo">
-
-        <div class="logo-icono">
-          🍔
-        </div>
-
-        <div>
-          URBAN <span>BURGER</span>
-        </div>
-
-      </a>
-
-
-      <nav class="nav-links" id="navLinks">
-
-        <a href="#inicio">Inicio</a>
-
-        <a href="#categorias">Categorías</a>
-
-        <a href="#menu">Menú</a>
-
-        <a href="#nosotros">Nosotros</a>
-
-        <a href="#ubicacion">Ubicación</a>
-
-        <a href="#redes">Redes</a>
-
-      </nav>
-
-
-      <button
-        class="menu-movil"
-        id="menuMovil"
-        aria-label="Abrir menú"
-      >
-        ☰
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <main>
-
-    <!-- ========================================
-         HERO
-         ======================================== -->
-
-    <section class="hero" id="inicio">
-
-      <div class="contenedor">
-
-        <div class="hero-contenido">
-
-          <div class="hero-etiqueta">
-            SABOR ARTESANAL
-          </div>
-
-
-          <!-- CAMBIAR TEXTO PRINCIPAL -->
-
-          <h1>
-            Hechas para
-            <span>disfrutar</span>
-          </h1>
-
-
-          <p>
-            Hamburguesas artesanales, ingredientes frescos
-            y combinaciones creadas para convertir cualquier
-            antojo en una experiencia increíble.
-          </p>
-
-
-          <div class="hero-botones">
-
-            <a href="#menu" class="boton">
-              Ver menú ↓
-            </a>
-
-            <a href="#nosotros" class="boton-borde">
-              Conócenos
-            </a>
-
-          </div>
-
-        </div>
-
+  <!--
+  GUÍA RÁPIDA PARA EDITAR
+  index.html  : textos, secciones y tarjetas del menú.
+  estilos.css : colores, diseño y versión para celular.
+  pedidos.js  : precios del carrito, sabores y WhatsApp.
+  imagenes/   : fotografías de la página.
+
+  Conserva estos nombres y carpetas al subirlos a GitHub.
+  Si cambias un nombre o precio, actualiza su tarjeta aquí
+  y el producto con el mismo id en pedidos.js.
+-->
+  <head>
+    <!-- ==================================================
+     01. DATOS DE LA PÁGINA: TÍTULO Y DESCRIPCIÓN
+     ================================================== -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#870e0b" />
+    <title>Donde Cúcuta · La Pizzería | Menú y pedidos</title>
+    <meta
+      name="description"
+      content="Pizzas, hamburguesas, perros, salchipapas, pollo y postres. Explora el menú de La Pizzería Donde Cúcuta y arma tu pedido."
+    />
+
+    <!-- ==================================================
+     02. DISEÑO Y COLORES
+     ================================================== -->
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <!-- ==================================================
+     03. ENCABEZADO Y NAVEGACIÓN
+     ================================================== -->
+    <header class="topbar">
+      <div class="wrap nav">
+        <a
+          class="brand"
+          href="#inicio"
+          aria-label="La Pizzería Donde Cúcuta, inicio"
+          ><small>La Pizzería</small
+          ><strong>DONDE <span>CÚCUTA</span></strong></a
+        >
+        <nav id="navigation" aria-label="Navegación principal">
+          <a href="#inicio">Inicio</a><a href="#menu">Menú</a
+          ><a href="#nosotros">Nosotros</a><a href="#contacto">Contacto</a>
+        </nav>
+        <a class="button yellow" href="#menu"
+          >Ver menú <span aria-hidden="true">↗</span></a
+        ><button
+          class="nav-toggle"
+          aria-label="Abrir navegación"
+          aria-controls="navigation"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
       </div>
+    </header>
 
-    </section>
-
-
-    <!-- ========================================
-         BENEFICIOS
-         ======================================== -->
-
-    <div class="beneficios">
-
-      <div class="contenedor beneficios-grid">
-
-
-        <div class="beneficio">
-
-          <div class="beneficio-icono">
-            🥬
+    <!-- ==================================================
+     04. CONTENIDO PRINCIPAL
+     ================================================== -->
+    <main>
+      <!-- ==================================================
+     PORTADA: FRASE PRINCIPAL E IMAGEN DE PIZZA
+     ================================================== -->
+      <section id="inicio" class="hero torn">
+        <img
+          class="hero-photo"
+          src="imagenes/pizza-portada.png"
+          alt="Pizza de pepperoni con una porción levantada y queso fundido"
+          width="1536"
+          height="1024"
+          fetchpriority="high"
+        />
+        <div class="wrap">
+          <div class="hero-copy">
+            <span class="eyebrow">La Pizzería · Donde Cúcuta</span>
+            <h1>EL ANTOJO<br />EMPIEZA CON<span>UNA PORCIÓN</span></h1>
+            <p>
+              Pizza, queso y mucho sabor.<br />Así se disfruta Donde Cúcuta.
+            </p>
+            <a href="#menu" class="button"
+              >Ver menú <span aria-hidden="true">→</span></a
+            >
+            <p class="micro">Un placer para su paladar</p>
           </div>
-
-          <div>
-
-            <h3>
-              Ingredientes frescos
-            </h3>
-
-            <p>
-              Seleccionados para cada preparación.
-            </p>
-
-          </div>
-
         </div>
+      </section>
 
-
-        <div class="beneficio">
-
-          <div class="beneficio-icono">
-            🔥
-          </div>
-
-          <div>
-
-            <h3>
-              Preparado al momento
-            </h3>
-
-            <p>
-              Sabor fresco desde nuestra cocina.
-            </p>
-
-          </div>
-
+      <!-- ==================================================
+     CATEGORÍAS E IMAGEN DE PRESENTACIÓN
+     ================================================== -->
+      <section id="categorias">
+        <div class="wrap intro">
+          <h2>Para todos <span>los antojos</span></h2>
+          <p>Pizzas, hamburguesas y mucho más. Hoy tú eliges.</p>
         </div>
-
-
-        <div class="beneficio">
-
-          <div class="beneficio-icono">
-            ⭐
-          </div>
-
-          <div>
-
-            <h3>
-              Sabor que destaca
-            </h3>
-
-            <p>
-              Recetas pensadas para querer volver.
-            </p>
-
-          </div>
-
-        </div>
-
-
-      </div>
-
-    </div>
-
-
-    <!-- ========================================
-         CATEGORÍAS
-         ======================================== -->
-
-    <section id="categorias">
-
-      <div class="contenedor">
-
-        <div class="cabecera-seccion">
-
-          <p class="mini-titulo">
-            Explora nuestro menú
-          </p>
-
-          <h2 class="titulo-seccion">
-            Elige tu <span>antojo</span>
-          </h2>
-
-          <p class="texto-seccion">
-            Encuentra fácilmente lo que quieres probar hoy.
-          </p>
-
-        </div>
-
-
-        <div class="categorias-grid">
-
-
-          <a href="#hamburguesas" class="categoria">
-
-            <div class="categoria-icono">
-              🍔
-            </div>
-
-            <h3>
-              Hamburguesas
-            </h3>
-
-            <p>
-              Artesanales y llenas de sabor
-            </p>
-
-          </a>
-
-
-          <a href="#bebidas" class="categoria">
-
-            <div class="categoria-icono">
-              🥤
-            </div>
-
-            <h3>
-              Bebidas
-            </h3>
-
-            <p>
-              Frías y refrescantes
-            </p>
-
-          </a>
-
-
-          <a href="#entradas" class="categoria">
-
-            <div class="categoria-icono">
-              🍟
-            </div>
-
-            <h3>
-              Entradas
-            </h3>
-
-            <p>
-              Perfectas para compartir
-            </p>
-
-          </a>
-
-
-          <a href="#postres" class="categoria">
-
-            <div class="categoria-icono">
-              🍰
-            </div>
-
-            <h3>
-              Postres
-            </h3>
-
-            <p>
-              El final perfecto
-            </p>
-
-          </a>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================
-         HAMBURGUESAS
-         ======================================== -->
-
-    <section class="productos" id="menu">
-
-      <div class="contenedor">
-
-        <div class="cabecera-seccion" id="hamburguesas">
-
-          <p class="mini-titulo">
-            Las favoritas
-          </p>
-
-          <h2 class="titulo-seccion">
-            Nuestras <span>hamburguesas</span>
-          </h2>
-
-          <p class="texto-seccion">
-            Productos de ejemplo para esta plantilla.
-            Después se cambian según cada restaurante.
-          </p>
-
-        </div>
-
-
-        <div class="productos-grid">
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=85&w=900&auto=format&fit=crop"
-                alt="Hamburguesa clásica"
-              >
-
-            </div>
-
-
-            <div class="producto-info">
-
-              <h3>
-                Burger Clásica
-              </h3>
-
-              <p>
-                Carne artesanal, queso cheddar,
-                vegetales frescos y salsa especial.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $18.000
-                </span>
-
-                <span class="etiqueta-producto">
-                  FAVORITA
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=85&w=900&auto=format&fit=crop"
-                alt="Hamburguesa doble"
-              >
-
-            </div>
-
-
-            <div class="producto-info">
-
-              <h3>
-                Burger Doble
-              </h3>
-
-              <p>
-                Doble carne, doble queso,
-                tocineta y salsa de la casa.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $24.000
-                </span>
-
-                <span class="etiqueta-producto">
-                  TOP
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?q=85&w=900&auto=format&fit=crop"
-                alt="Hamburguesa especial"
-              >
-
-            </div>
-
-
-            <div class="producto-info">
-
-              <h3>
-                Burger Especial
-              </h3>
-
-              <p>
-                Carne artesanal, queso,
-                cebolla caramelizada y salsa premium.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $22.000
-                </span>
-
-                <span class="etiqueta-producto">
-                  NUEVA
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================
-         BEBIDAS
-         ======================================== -->
-
-    <section id="bebidas">
-
-      <div class="contenedor">
-
-        <div class="cabecera-seccion">
-
-          <p class="mini-titulo">
-            Para acompañar
-          </p>
-
-          <h2 class="titulo-seccion">
-            Bebidas <span>refrescantes</span>
-          </h2>
-
-        </div>
-
-
-        <div class="productos-grid">
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1621263764928-df1444c5e859?q=85&w=900&auto=format&fit=crop"
-                alt="Limonada"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Limonada Natural
-              </h3>
-
-              <p>
-                Preparada al momento
-                con limón fresco y hielo.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $7.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1544145945-f90425340c7e?q=85&w=900&auto=format&fit=crop"
-                alt="Bebida gaseosa"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Gaseosa
-              </h3>
-
-              <p>
-                Diferentes sabores
-                para acompañar tu comida.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $5.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=85&w=900&auto=format&fit=crop"
-                alt="Bebida fría"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Bebida Especial
-              </h3>
-
-              <p>
-                Refrescante mezcla
-                preparada especialmente para la casa.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $9.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================
-         ENTRADAS
-         ======================================== -->
-
-    <section class="productos" id="entradas">
-
-      <div class="contenedor">
-
-        <div class="cabecera-seccion">
-
-          <p class="mini-titulo">
-            Para compartir
-          </p>
-
-          <h2 class="titulo-seccion">
-            Entradas y <span>acompañamientos</span>
-          </h2>
-
-        </div>
-
-
-        <div class="productos-grid">
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?q=85&w=900&auto=format&fit=crop"
-                alt="Papas fritas"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Papas Clásicas
-              </h3>
-
-              <p>
-                Papas crocantes
-                recién preparadas.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $8.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?q=85&w=900&auto=format&fit=crop"
-                alt="Papas especiales"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Papas Especiales
-              </h3>
-
-              <p>
-                Papas con queso,
-                salsa especial y toppings.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $13.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=85&w=900&auto=format&fit=crop"
-                alt="Pollo crocante"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Pollo Crunch
-              </h3>
-
-              <p>
-                Pollo crocante
-                acompañado de salsa de la casa.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $16.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================
-         POSTRES
-         ======================================== -->
-
-    <section id="postres">
-
-      <div class="contenedor">
-
-        <div class="cabecera-seccion">
-
-          <p class="mini-titulo">
-            Algo dulce
-          </p>
-
-          <h2 class="titulo-seccion">
-            Nuestros <span>postres</span>
-          </h2>
-
-        </div>
-
-
-        <div class="productos-grid">
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=85&w=900&auto=format&fit=crop"
-                alt="Torta de chocolate"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Torta de Chocolate
-              </h3>
-
-              <p>
-                Porción suave y chocolatosa,
-                perfecta para cerrar.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $10.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?q=85&w=900&auto=format&fit=crop"
-                alt="Postre"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Postre de la Casa
-              </h3>
-
-              <p>
-                Una preparación especial
-                que cambia según disponibilidad.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $12.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <article class="producto">
-
-            <div class="producto-imagen">
-
-              <img
-                src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=85&w=900&auto=format&fit=crop"
-                alt="Donas"
-              >
-
-            </div>
-
-            <div class="producto-info">
-
-              <h3>
-                Dulce Especial
-              </h3>
-
-              <p>
-                Preparación dulce
-                perfecta para acompañar una bebida.
-              </p>
-
-              <div class="producto-abajo">
-
-                <span class="precio">
-                  $9.000
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================
-         PROMOCIÓN
-         ======================================== -->
-
-    <section class="promo">
-
-      <div class="contenedor">
-
-        <div class="promo-box">
-
-          <div>
-
-            <p>
-              PROMOCIÓN DESTACADA
-            </p>
-
-            <h2>
-              Combo<br>
-              especial
-            </h2>
-
-            <p>
-              Hamburguesa + papas + bebida
-            </p>
-
-          </div>
-
-
-          <div class="promo-icono">
-            🍔🔥
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================
-         NOSOTROS
-         ======================================== -->
-
-    <section id="nosotros">
-
-      <div class="contenedor nosotros-grid">
-
-
-        <div class="nosotros-img">
-
+        <div class="feature-photo">
           <img
-            src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?q=85&w=1000&auto=format&fit=crop"
-            alt="Restaurante"
-          >
-
+            src="imagenes/pizza-hamburguesa-salchipapas.png"
+            alt="Pizza, hamburguesa y salchipapas, imagen ilustrativa"
+            width="2048"
+            height="683"
+            loading="lazy"
+          />
         </div>
-
-
-        <div class="nosotros-texto">
-
-          <p class="mini-titulo">
-            Nuestra historia
-          </p>
-
-          <h2 class="titulo-seccion">
-            Cocinamos con
-            <span>pasión</span>
-          </h2>
-
-          <p>
-            Urban Burger nació con una idea sencilla:
-            preparar comida deliciosa con ingredientes frescos,
-            buenas porciones y una experiencia que haga
-            querer volver.
-          </p>
-
-          <p>
-            Esta sección está preparada para que cada cliente
-            pueda contar la historia de su restaurante,
-            negocio o emprendimiento.
-          </p>
-
-
-          <a
-            href="#ubicacion"
-            class="boton"
+        <p class="wrap photo-caption">Fotografías ilustrativas.</p>
+        <div class="wrap category-grid">
+          <a href="#pizzas" class="category-link"
+            ><span>01</span><strong>Pizzas</strong
+            ><span aria-hidden="true">↗</span></a
+          ><a href="#hamburguesas" class="category-link"
+            ><span>02</span><strong>Hamburguesas</strong
+            ><span aria-hidden="true">↗</span></a
+          ><a href="#perros" class="category-link"
+            ><span>03</span><strong>Perros</strong
+            ><span aria-hidden="true">↗</span></a
+          ><a href="#salchipapas" class="category-link"
+            ><span>04</span><strong>Salchipapas</strong
+            ><span aria-hidden="true">↗</span></a
+          ><a href="#antojitos" class="category-link"
+            ><span>05</span><strong>Antojitos</strong
+            ><span aria-hidden="true">↗</span></a
+          ><a href="#parrilla" class="category-link"
+            ><span>06</span><strong>Carnes y alitas</strong
+            ><span aria-hidden="true">↗</span></a
+          ><a href="#pollo" class="category-link"
+            ><span>07</span><strong>Pollo</strong
+            ><span aria-hidden="true">↗</span></a
+          ><a href="#postres" class="category-link"
+            ><span>08</span><strong>Postres y helados</strong
+            ><span aria-hidden="true">↗</span></a
           >
-            Visítanos
-          </a>
-
         </div>
+      </section>
 
-
+      <!-- ==================================================
+     05. MENÚ: BUSCADOR Y FILTROS
+     ================================================== -->
+      <div id="menu" class="menu-banner">
+        <div class="wrap">
+          <div>
+            <span class="eyebrow">Escoge tu favorito</span>
+            <h2>Nuestro menú</h2>
+            <p>59 productos y presentaciones · Precios en pesos colombianos</p>
+          </div>
+          <label class="search"
+            ><span class="sr-only">Buscar en el menú</span
+            ><input
+              id="search"
+              type="search"
+              placeholder="Busca pizza, pollo, arepa…"
+              autocomplete="off"
+          /></label>
+        </div>
+      </div>
+      <div class="filterbar">
+        <div
+          class="wrap filters"
+          role="group"
+          aria-label="Filtrar por categoría"
+        >
+          <button data-filter="all" aria-pressed="true">Todo el menú</button
+          ><button type="button" data-filter="pizzas">Pizzas</button
+          ><button type="button" data-filter="hamburguesas">Hamburguesas</button
+          ><button type="button" data-filter="perros">Perros</button
+          ><button type="button" data-filter="salchipapas">Salchipapas</button
+          ><button type="button" data-filter="antojitos">Antojitos</button
+          ><button type="button" data-filter="parrilla">Carnes y alitas</button
+          ><button type="button" data-filter="pollo">Pollo</button
+          ><button type="button" data-filter="postres">
+            Postres y helados
+          </button>
+        </div>
       </div>
 
-    </section>
-
-
-    <!-- ========================================
-         UBICACIÓN E INFORMACIÓN
-         ======================================== -->
-
-    <section class="info" id="ubicacion">
-
-      <div class="contenedor">
-
-
-        <div class="cabecera-seccion">
-
-          <p class="mini-titulo">
-            Encuéntranos
-          </p>
-
-          <h2 class="titulo-seccion">
-            Estamos cerca de <span>ti</span>
-          </h2>
-
-        </div>
-
-
-        <div class="info-grid">
-
-
-          <div class="info-card">
-
-            <div class="info-icono">
-              📍
-            </div>
-
-            <h3>
-              Ubicación
-            </h3>
-
-            <!-- CAMBIAR PARA CADA CLIENTE -->
-
-            <p>
-              Funza, Cundinamarca
-            </p>
-
-          </div>
-
-
-          <div class="info-card">
-
-            <div class="info-icono">
-              🕒
-            </div>
-
-            <h3>
-              Horarios
-            </h3>
-
-            <!-- CAMBIAR PARA CADA CLIENTE -->
-
-            <p>
-              Lunes a domingo<br>
-              12:00 p. m. - 10:00 p. m.
-            </p>
-
-          </div>
-
-
-          <div class="info-card">
-
-            <div class="info-icono">
-              📱
-            </div>
-
-            <h3>
-              Contacto
-            </h3>
-
-            <!-- CAMBIAR PARA CADA CLIENTE -->
-
-            <p>
-              +57 300 123 4567<br>
-              restaurante@email.com
-            </p>
-
-          </div>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================
-         REDES SOCIALES
-         ======================================== -->
-
-    <section id="redes">
-
-      <div class="contenedor">
-
-
-        <div class="cabecera-seccion">
-
-          <p class="mini-titulo">
-            Síguenos
-          </p>
-
-          <h2 class="titulo-seccion">
-            Encuéntranos en <span>redes</span>
-          </h2>
-
-          <p class="texto-seccion">
-            Conoce nuestras novedades,
-            promociones y productos.
-          </p>
-
-        </div>
-
-
-        <div class="redes-grid">
-
-
-          <!-- CAMBIAR LINKS PARA CADA CLIENTE -->
-
-          <a
-            class="red-social"
-            href="https://instagram.com"
-            target="_blank"
-          >
-            📸 Instagram
-          </a>
-
-
-          <a
-            class="red-social"
-            href="https://facebook.com"
-            target="_blank"
-          >
-            👍 Facebook
-          </a>
-
-
-          <a
-            class="red-social"
-            href="https://tiktok.com"
-            target="_blank"
-          >
-            🎵 TikTok
-          </a>
-
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-  </main>
-
-
-  <!-- ========================================
-       FOOTER
-       ======================================== -->
-
-  <footer>
-
-    <div class="contenedor">
-
-
-      <div class="footer-grid">
-
-
-        <div class="footer-col">
-
-          <a href="#inicio" class="logo">
-
-            <div class="logo-icono">
-              🍔
-            </div>
-
+      <!-- ==================================================
+     06. TARJETAS: PRODUCTOS, INGREDIENTES Y PRECIOS
+     ================================================== -->
+      <div class="wrap" id="catalog">
+        <!-- ==================================================
+     PIZZAS · 6 PRESENTACIONES
+     ================================================== -->
+        <section class="menu-section" id="pizzas" data-category="pizzas">
+          <div class="section-heading">
             <div>
-              URBAN <span>BURGER</span>
+              <span class="eyebrow">06 tamaños · 15 sabores</span>
+              <h2>Pizzas</h2>
             </div>
-
-          </a>
-
-          <p style="margin-top: 18px;">
-            Comida fresca, sabor increíble
-            y una experiencia para repetir.
-          </p>
-
-        </div>
-
-
-        <div class="footer-col">
-
-          <h3>
-            Navegación
-          </h3>
-
-          <a href="#inicio">
-            Inicio
-          </a>
-
-          <a href="#menu">
-            Menú
-          </a>
-
-          <a href="#nosotros">
-            Nosotros
-          </a>
-
-          <a href="#ubicacion">
-            Ubicación
-          </a>
-
-        </div>
-
-
-        <div class="footer-col">
-
-          <h3>
-            Menú
-          </h3>
-
-          <a href="#hamburguesas">
-            Hamburguesas
-          </a>
-
-          <a href="#bebidas">
-            Bebidas
-          </a>
-
-          <a href="#entradas">
-            Entradas
-          </a>
-
-          <a href="#postres">
-            Postres
-          </a>
-
-        </div>
-
-
-        <div class="footer-col">
-
-          <h3>
-            Contacto
-          </h3>
-
-          <!-- CAMBIAR -->
-
-          <p>
-            📞 +57 300 123 4567
-          </p>
-
-          <p>
-            📍 Funza, Cundinamarca
-          </p>
-
-          <p>
-            ✉ restaurante@email.com
-          </p>
-
-        </div>
-
-
+            <span class="section-number">01</span>
+          </div>
+          <details class="flavors">
+            <summary>
+              Conoce nuestros 15 sabores de pizza <span>＋</span>
+            </summary>
+            <div class="flavor-grid">
+              <div>
+                <strong>Hawaiana</strong>
+                <p>Jamón, queso, piña</p>
+              </div>
+              <div>
+                <strong>Ranchera</strong>
+                <p>Queso, salchicha ranchera en julianas</p>
+              </div>
+              <div>
+                <strong>Napolitana</strong>
+                <p>Queso, tomate en rodajas</p>
+              </div>
+              <div>
+                <strong>Pollo y champiñones</strong>
+                <p>Queso, jamón, pollo, champiñones</p>
+              </div>
+              <div>
+                <strong>Mexicana</strong>
+                <p>Queso, tomate, cebolla morada, carne molida y jalapeño</p>
+              </div>
+              <div>
+                <strong>De la casa #1</strong>
+                <p>Queso, maíz y tocineta</p>
+              </div>
+              <div>
+                <strong>De la casa #2</strong>
+                <p>Queso, tocineta, plátano maduro caramelizado</p>
+              </div>
+              <div>
+                <strong>Queso jamón</strong>
+                <p>Queso y jamón</p>
+              </div>
+              <div>
+                <strong>Vegetariana</strong>
+                <p>
+                  Queso, tomate, champiñones, maíz, aros de cebolla, pimentón
+                </p>
+              </div>
+              <div>
+                <strong>Queso bocadillo</strong>
+                <p>Queso y bocadillo</p>
+              </div>
+              <div>
+                <strong>Queso arequipe</strong>
+                <p>Queso y arequipe</p>
+              </div>
+              <div>
+                <strong>Queso maicitos</strong>
+                <p>Queso y maicitos</p>
+              </div>
+              <div>
+                <strong>Salami</strong>
+                <p>Salami</p>
+              </div>
+              <div>
+                <strong>Peperoni jalapeño</strong>
+                <p>Peperoni y jalapeño</p>
+              </div>
+              <div>
+                <strong>De la casa #3</strong>
+                <p>Plátano maduro en trocitos y bocadillo</p>
+              </div>
+            </div>
+          </details>
+          <div class="productos-grid">
+            <article class="producto" data-id="p01">
+              <div class="card-top">
+                <span class="tag">Pizzas</span
+                ><span class="item-number">01</span>
+              </div>
+              <h3>Mini pizza</h3>
+              <p>Tu sabor favorito en presentación mini.</p>
+              <div class="card-bottom">
+                <span class="precio">$20.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p01">
+                Elegir sabor<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p02">
+              <div class="card-top">
+                <span class="tag">Pizzas</span
+                ><span class="item-number">02</span>
+              </div>
+              <h3>Pizzeta</h3>
+              <p>4 porciones.</p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p02">
+                Elegir sabor<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p03">
+              <div class="card-top">
+                <span class="tag">Pizzas</span
+                ><span class="item-number">03</span>
+              </div>
+              <h3>Pizza pequeña</h3>
+              <p>6 porciones.</p>
+              <div class="card-bottom">
+                <span class="precio">$35.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p03">
+                Elegir sabor<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p04">
+              <div class="card-top">
+                <span class="tag">Pizzas</span
+                ><span class="item-number">04</span>
+              </div>
+              <h3>Pizza mediana</h3>
+              <p>8 porciones.</p>
+              <div class="card-bottom">
+                <span class="precio">$60.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p04">
+                Elegir sabor<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p05">
+              <div class="card-top">
+                <span class="tag">Pizzas</span
+                ><span class="item-number">05</span>
+              </div>
+              <h3>Pizza grande</h3>
+              <p>10 porciones.</p>
+              <div class="card-bottom">
+                <span class="precio">$70.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p05">
+                Elegir sabor<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p06">
+              <div class="card-top">
+                <span class="tag">Pizzas</span
+                ><span class="item-number">06</span>
+              </div>
+              <h3>Pizza extragrande</h3>
+              <p>12 porciones.</p>
+              <div class="card-bottom">
+                <span class="precio">$80.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p06">
+                Elegir sabor<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <!-- ==================================================
+     HAMBURGUESAS · 3 PRODUCTOS
+     ================================================== -->
+        <section
+          class="menu-section"
+          id="hamburguesas"
+          data-category="hamburguesas"
+        >
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Sencilla, doble o especial</span>
+              <h2>Hamburguesas</h2>
+            </div>
+            <span class="section-number">02</span>
+          </div>
+          <div class="productos-grid">
+            <article class="producto" data-id="p07">
+              <div class="card-top">
+                <span class="tag">Hamburguesas</span
+                ><span class="item-number">07</span>
+              </div>
+              <h3>Hamburguesa sencilla</h3>
+              <p>
+                Pan, carne, jamón, quesillo, tocineta, ripio de papa, batavia,
+                tomate, cebolla, salsas al gusto y huevos de codorniz.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$22.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p07">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p08">
+              <div class="card-top">
+                <span class="tag">Hamburguesas</span
+                ><span class="item-number">08</span>
+              </div>
+              <h3>Hamburguesa doble</h3>
+              <p>
+                Pan, 2 carnes, jamón, quesillo, tocineta, ripio de papa,
+                batavia, tomate, cebolla, salsas al gusto y huevos de codorniz.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$30.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p08">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p09">
+              <div class="card-top">
+                <span class="tag">Especial</span
+                ><span class="item-number">09</span>
+              </div>
+              <h3>Hamburguesa especial</h3>
+              <p>
+                Pan, carne o pollo desmechado, jamón, quesillo, tocineta, ripio
+                de papa, batavia, tomate, cebolla, salsas al gusto y huevos de
+                codorniz.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$36.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p09">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <!-- ==================================================
+     PERROS · 5 PRODUCTOS
+     ================================================== -->
+        <section class="menu-section" id="perros" data-category="perros">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">De sencillo a monster</span>
+              <h2>Perros</h2>
+            </div>
+            <span class="section-number">03</span>
+          </div>
+          <div class="productos-grid">
+            <article class="producto" data-id="p10">
+              <div class="card-top">
+                <span class="tag">Perros</span
+                ><span class="item-number">10</span>
+              </div>
+              <h3>Perro sencillo</h3>
+              <p>
+                Pan, ripio de papa, salchicha, queso cuajada y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$15.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p10">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p11">
+              <div class="card-top">
+                <span class="tag">Perros</span
+                ><span class="item-number">11</span>
+              </div>
+              <h3>Perro gratinado</h3>
+              <p>
+                Pan, ripio de papa, salchicha, queso cuajada, tocineta, huevos
+                de codorniz, queso en lonchas y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$22.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p11">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p12">
+              <div class="card-top">
+                <span class="tag">Perros</span
+                ><span class="item-number">12</span>
+              </div>
+              <h3>Perro monster</h3>
+              <p>
+                Pan, ripio de papa, 3 salchichas, queso cuajada, 2 tocinetas,
+                huevos de codorniz, queso en lonchas y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$30.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p12">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p13">
+              <div class="card-top">
+                <span class="tag">Especial</span
+                ><span class="item-number">13</span>
+              </div>
+              <h3>Perro especial</h3>
+              <p>
+                Pan, ripio de papa, salchicha, carne o pollo desmechado, queso
+                cuajada, tocineta, huevos de codorniz, queso en lonchas y salsas
+                al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$36.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p13">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p14">
+              <div class="card-top">
+                <span class="tag">Perros</span
+                ><span class="item-number">14</span>
+              </div>
+              <h3>Perro doble</h3>
+              <p>
+                Pan, ripio de papa, 2 salchichas, queso cuajada, tocineta,
+                huevos de codorniz, queso en lonchas y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p14">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <!-- ==================================================
+     SALCHIPAPAS · 9 PRESENTACIONES
+     ================================================== -->
+        <section
+          class="menu-section"
+          id="salchipapas"
+          data-category="salchipapas"
+        >
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Tradicionales y especiales</span>
+              <h2>Salchipapas</h2>
+            </div>
+            <span class="section-number">04</span>
+          </div>
+          <div class="productos-grid">
+            <article class="producto" data-id="p33">
+              <div class="card-top">
+                <span class="tag">Especial</span
+                ><span class="item-number">33</span>
+              </div>
+              <h3>Salchipapa especial personal</h3>
+              <p>
+                Papa 200 g, salchicha, huevos, salsas, carne desmechada y
+                quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$20.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p33">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p34">
+              <div class="card-top">
+                <span class="tag">Especial</span
+                ><span class="item-number">34</span>
+              </div>
+              <h3>Salchipapa especial pequeña</h3>
+              <p>
+                Papa 400 g, salchicha, huevos, salsas, carne desmechada,
+                tocineta y quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$40.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p34">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p35">
+              <div class="card-top">
+                <span class="tag">Especial</span
+                ><span class="item-number">35</span>
+              </div>
+              <h3>Salchipapa especial mediana</h3>
+              <p>
+                Papa 400 g, salchicha, huevos, salsas, tocineta, carne
+                desmechada, maduro frito, maíz y quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$60.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p35">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p36">
+              <div class="card-top">
+                <span class="tag">Tradicional</span
+                ><span class="item-number">36</span>
+              </div>
+              <h3>Salchipapa tradicional personal</h3>
+              <p>
+                200 g de papa, salchicha, huevos de codorniz y salsas. Va
+                gratinada.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$15.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p36">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p37">
+              <div class="card-top">
+                <span class="tag">Tradicional</span
+                ><span class="item-number">37</span>
+              </div>
+              <h3>Salchipapa tradicional pequeña</h3>
+              <p>
+                400 g de papa, salchicha, huevos de codorniz, salsas y quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p37">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p38">
+              <div class="card-top">
+                <span class="tag">Tradicional</span
+                ><span class="item-number">38</span>
+              </div>
+              <h3>Salchipapa tradicional mediana</h3>
+              <p>
+                600 g de papa, salchicha, huevos de codorniz, salsas y quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$40.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p38">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p39">
+              <div class="card-top">
+                <span class="tag">Tradicional</span
+                ><span class="item-number">39</span>
+              </div>
+              <h3>Salchipapa tradicional grande</h3>
+              <p>
+                800 g de papa, salchicha, huevos de codorniz, salsas y quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$55.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p39">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p40">
+              <div class="card-top">
+                <span class="tag">Tradicional</span
+                ><span class="item-number">40</span>
+              </div>
+              <h3>Salchipapa tradicional más grande</h3>
+              <p>
+                1.000 g de papa, salchicha, huevos de codorniz, salsas y
+                quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$70.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p40">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p41">
+              <div class="card-top">
+                <span class="tag">Salchipapas</span
+                ><span class="item-number">41</span>
+              </div>
+              <h3>Salchipapa familiar</h3>
+              <p>
+                1.000 g de papa, salchicha, arepa frita, maduro frito, huevos de
+                codorniz, maíz, salsas y quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$90.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p41">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <!-- ==================================================
+     ANTOJITOS · 9 PRODUCTOS
+     ================================================== -->
+        <section class="menu-section" id="antojitos" data-category="antojitos">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Arepas, patacones y más</span>
+              <h2>Antojitos</h2>
+            </div>
+            <span class="section-number">05</span>
+          </div>
+          <div class="productos-grid">
+            <article class="producto" data-id="p15">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">15</span>
+              </div>
+              <h3>Arepa burger</h3>
+              <p>
+                Arepa, carne, ripio de papa, jamón, quesillo, tocineta, huevos
+                de codorniz y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$20.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p15">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p16">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">16</span>
+              </div>
+              <h3>Cóctel de huevos</h3>
+              <p>
+                10 huevos de codorniz, ripio de papa, queso cuajada, tocineta,
+                quesillo y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$20.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p16">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p17">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">17</span>
+              </div>
+              <h3>Patacón con carne desmechada</h3>
+              <p>
+                Patacón, carne desmechada, quesillo, huevos de codorniz y salsas
+                al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$28.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p17">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p18">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">18</span>
+              </div>
+              <h3>Desgranado pequeño</h3>
+              <p>
+                Ripio de papa, batavia, queso cuajada 120 g, maicito 100 g,
+                carne de cerdo 150 g, quesillo y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$30.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p18">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p19">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">19</span>
+              </div>
+              <h3>Desgranado grande</h3>
+              <p>
+                Ripio de papa, batavia, queso cuajada 200 g, maicito 200 g,
+                carne de cerdo 300 g, quesillo y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$40.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p19">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p20">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">20</span>
+              </div>
+              <h3>Maicito con pollo</h3>
+              <p>
+                Queso cuajada, maicito, pollo picado, quesillo, huevos de
+                codorniz y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$28.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p20">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p21">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">21</span>
+              </div>
+              <h3>Patacón con todo</h3>
+              <p>
+                Patacón, batavia, tomate, ripio de papa, salchicha, carne, queso
+                cuajada, jamón, tocineta, maicito, quesillo, huevos de codorniz
+                y salsas al gusto.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$40.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p21">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p22">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">22</span>
+              </div>
+              <h3>Arepa con queso</h3>
+              <p>Arepa y queso cuajada rayado.</p>
+              <div class="card-bottom">
+                <span class="precio">$12.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p22">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p23">
+              <div class="card-top">
+                <span class="tag">Antojitos</span
+                ><span class="item-number">23</span>
+              </div>
+              <h3>Arepa con quesillo</h3>
+              <p>Arepa más quesillo.</p>
+              <div class="card-bottom">
+                <span class="precio">$4.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p23">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <!-- ==================================================
+     CARNES Y ALITAS · 9 PRODUCTOS
+     ================================================== -->
+        <section class="menu-section" id="parrilla" data-category="parrilla">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Plancha, BBQ y picantes</span>
+              <h2>Carnes y alitas</h2>
+            </div>
+            <span class="section-number">06</span>
+          </div>
+          <div class="productos-grid">
+            <article class="producto" data-id="p24">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">24</span>
+              </div>
+              <h3>Chunchurria frita pequeña</h3>
+              <p>Chunchurria 250 g + 200 g de papa a la francesa.</p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p24">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p25">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">25</span>
+              </div>
+              <h3>Chunchurria frita grande</h3>
+              <p>Chunchurria 500 g + 400 g de papa a la francesa.</p>
+              <div class="card-bottom">
+                <span class="precio">$45.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p25">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p26">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">26</span>
+              </div>
+              <h3>Costillas BBQ pequeñas</h3>
+              <p>
+                Costilla 250 g bañada en salsa BBQ con porción de papa a la
+                francesa.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p26">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p27">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">27</span>
+              </div>
+              <h3>Costillas BBQ grandes</h3>
+              <p>
+                Costilla 500 g bañada en salsa BBQ con 400 g de papa a la
+                francesa.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$45.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p27">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p28">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">28</span>
+              </div>
+              <h3>Alitas picantes</h3>
+              <p>Promedio de 12 a 15 unidades con papa a la francesa.</p>
+              <div class="card-bottom">
+                <span class="precio">$45.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p28">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p29">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">29</span>
+              </div>
+              <h3>Carne a la plancha</h3>
+              <p>
+                Lomo cuadrada de 250 g, papa a la francesa y arepa frita con
+                quesillo.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$45.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p29">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p30">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">30</span>
+              </div>
+              <h3>Carne de cerdo a la plancha</h3>
+              <p>200 g de carne de cerdo + papa a la francesa.</p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p30">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p31">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">31</span>
+              </div>
+              <h3>Pechuga a la plancha · 200 g</h3>
+              <p>200 g de pechuga + papas a la francesa.</p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p31">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p32">
+              <div class="card-top">
+                <span class="tag">Carnes y alitas</span
+                ><span class="item-number">32</span>
+              </div>
+              <h3>Pechuga a la plancha · 400 g</h3>
+              <p>400 g de pechuga + papas a la francesa.</p>
+              <div class="card-bottom">
+                <span class="precio">$45.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p32">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <!-- ==================================================
+     POLLO · 8 PRESENTACIONES
+     ================================================== -->
+        <section class="menu-section" id="pollo" data-category="pollo">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Asado y apanado</span>
+              <h2>Pollo</h2>
+            </div>
+            <span class="section-number">07</span>
+          </div>
+          <div class="productos-grid">
+            <article class="producto" data-id="p42">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">42</span>
+              </div>
+              <h3>Pechuga apanado</h3>
+              <p>Pieza de pollo apanado.</p>
+              <div class="card-bottom">
+                <span class="precio">$10.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p42">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p43">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">43</span>
+              </div>
+              <h3>Ala apanado</h3>
+              <p>Pieza de pollo apanado.</p>
+              <div class="card-bottom">
+                <span class="precio">$5.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p43">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p44">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">44</span>
+              </div>
+              <h3>Muslo apanado</h3>
+              <p>Pieza de pollo apanado.</p>
+              <div class="card-bottom">
+                <span class="precio">$6.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p44">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p45">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">45</span>
+              </div>
+              <h3>Contramuslo apanado</h3>
+              <p>Pieza de pollo apanado.</p>
+              <div class="card-bottom">
+                <span class="precio">$8.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p45">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p46">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">46</span>
+              </div>
+              <h3>Pernil apanado</h3>
+              <p>Pieza de pollo apanado.</p>
+              <div class="card-bottom">
+                <span class="precio">$10.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p46">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p47">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">47</span>
+              </div>
+              <h3>¼ de pollo asado</h3>
+              <p>Pollo asado en la presentación indicada.</p>
+              <div class="card-bottom">
+                <span class="precio">$13.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p47">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p48">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">48</span>
+              </div>
+              <h3>½ pollo asado</h3>
+              <p>Pollo asado en la presentación indicada.</p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p48">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p49">
+              <div class="card-top">
+                <span class="tag">Pollo</span
+                ><span class="item-number">49</span>
+              </div>
+              <h3>Pollo asado entero</h3>
+              <p>Pollo asado en la presentación indicada.</p>
+              <div class="card-bottom">
+                <span class="precio">$50.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p49">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <!-- ==================================================
+     POSTRES Y HELADOS · 10 PRODUCTOS
+     ================================================== -->
+        <section class="menu-section" id="postres" data-category="postres">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Un final bien dulce</span>
+              <h2>Postres y helados</h2>
+            </div>
+            <span class="section-number">08</span>
+          </div>
+          <div class="productos-grid">
+            <article class="producto" data-id="p50">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">50</span>
+              </div>
+              <h3>Ensalada de frutas</h3>
+              <p>
+                Manzana, fresa, uvas, mango, banano picados, salsa, crema de
+                leche, queso rayado, 2 bolas de helado y galleta wafer.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$25.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p50">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p51">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">51</span>
+              </div>
+              <h3>Banana split</h3>
+              <p>Banano, 3 bolas de helado, lechera y salsa de chocolate.</p>
+              <div class="card-bottom">
+                <span class="precio">$16.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p51">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p52">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">52</span>
+              </div>
+              <h3>Malteada</h3>
+              <p>Malteada con sabor de helado a elegir.</p>
+              <div class="card-bottom">
+                <span class="precio">$15.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p52">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p53">
+              <div class="card-top">
+                <span class="tag">Especial</span
+                ><span class="item-number">53</span>
+              </div>
+              <h3>Oblea especial con frutas</h3>
+              <p>
+                Oblea, arequipe, queso rayado, manzana, uva, mango, fresa picada
+                y 1 bola de helado.
+              </p>
+              <div class="card-bottom">
+                <span class="precio">$15.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p53">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p54">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">54</span>
+              </div>
+              <h3>Oblea con queso y arequipe</h3>
+              <p>Oblea con queso y arequipe.</p>
+              <div class="card-bottom">
+                <span class="precio">$8.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p54">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p55">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">55</span>
+              </div>
+              <h3>Cono · 1 bola</h3>
+              <p>Una bola de helado en cono.</p>
+              <div class="card-bottom">
+                <span class="precio">$5.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p55">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p56">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">56</span>
+              </div>
+              <h3>Cono · 2 bolas</h3>
+              <p>Dos bolas de helado en cono.</p>
+              <div class="card-bottom">
+                <span class="precio">$7.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p56">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p57">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">57</span>
+              </div>
+              <h3>Vaso de helado · 3,5</h3>
+              <p>Helado en vaso, presentación 3,5 de la carta.</p>
+              <div class="card-bottom">
+                <span class="precio">$4.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p57">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p58">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">58</span>
+              </div>
+              <h3>Vaso de helado · 7 onzas</h3>
+              <p>Helado en vaso de 7 onzas.</p>
+              <div class="card-bottom">
+                <span class="precio">$6.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p58">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+            <article class="producto" data-id="p59">
+              <div class="card-top">
+                <span class="tag">Postres y helados</span
+                ><span class="item-number">59</span>
+              </div>
+              <h3>Vaso de helado · 12 onzas</h3>
+              <p>Helado en vaso de 12 onzas.</p>
+              <div class="card-bottom">
+                <span class="precio">$12.000</span
+                ><span class="currency">COP</span>
+              </div>
+              <button type="button" class="add" data-add="p59">
+                Agregar al carrito<span aria-hidden="true">+</span>
+              </button>
+            </article>
+          </div>
+        </section>
+        <p id="no-results" class="no-results" hidden>
+          No encontramos ese antojo. Prueba con otro nombre.
+        </p>
+        <!-- ==================================================
+     07. ADICIONES Y BORDES
+     ================================================== -->
+        <section class="extras" id="adiciones">
+          <span class="eyebrow">A tu gusto</span>
+          <h2>Un extra de sabor</h2>
+          <p>Agrega estas opciones al personalizar tu pizza o salchipapa.</p>
+          <div class="extra-grid">
+            <div>
+              <h3>Adiciones de pizza</h3>
+              <p class="extra-price">$10.000 <small>cada opción</small></p>
+              <ul>
+                <li>Queso</li>
+                <li>Peperoni</li>
+                <li>Maíz</li>
+                <li>Salami</li>
+                <li>Ranchera</li>
+                <li>Pollo desmechado</li>
+                <li>Piña</li>
+                <li>Tocineta</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Bordes de pizza</h3>
+              <p class="extra-price">$10.000 <small>cada opción</small></p>
+              <ul>
+                <li>Queso</li>
+                <li>Arequipe</li>
+                <li>Bocadillo</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Adiciones de salchipapas</h3>
+              <p class="extra-price">$10.000 <small>cada opción</small></p>
+              <ul>
+                <li>Tocineta</li>
+                <li>Quesillo</li>
+                <li>Maíz</li>
+                <li>Carne desmechada</li>
+                <li>Pollo desmechado</li>
+                <li>Carne picada</li>
+                <li>Queso cuajada</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <p class="menu-note">
+          El ingreso de bebidas ajenas al establecimiento tiene un costo
+          adicional de $4.000, según la carta.
+        </p>
       </div>
 
+      <!-- ==================================================
+     08. NOSOTROS
+     ================================================== -->
+      <section id="nosotros" class="about">
+        <div class="wrap">
+          <div>
+            <span class="eyebrow">La Pizzería Donde Cúcuta</span>
+            <h2>Mucho sabor.<br /><span>Muchos antojos.</span></h2>
+          </div>
+          <div>
+            <p>
+              Una pizza para compartir, una hamburguesa para disfrutar o una
+              salchipapa para reunir a todos. Nuestra carta tiene opciones para
+              cada antojo.
+            </p>
+            <p>
+              Elige tu tamaño, descubre nuestros sabores y completa tu pedido
+              con algo dulce.
+            </p>
+            <a href="#menu" class="button yellow"
+              >Encuentra tu favorito <span aria-hidden="true">→</span></a
+            >
+          </div>
+        </div>
+      </section>
 
-      <div class="copyright">
+      <!-- ==================================================
+     09. CONTACTO DEL RESTAURANTE
+     ================================================== -->
+      <section id="contacto" class="contact">
+        <div class="wrap">
+          <div>
+            <span class="eyebrow">Hablemos</span>
+            <h2>Tu próximo antojo empieza aquí</h2>
+            <p>
+              Consulta disponibilidad, horarios, ubicación y cobertura de
+              domicilios directamente con el restaurante.
+            </p>
+          </div>
+          <a
+            class="button contact-link"
+            href="https://wa.me/573115772836"
+            target="_blank"
+            rel="noopener"
+            >Consultar por WhatsApp ↗</a
+          >
+        </div>
+      </section>
+    </main>
 
-        © 2026 Urban Burger · Todos los derechos reservados
-
+    <!-- ==================================================
+     10. PIE DE PÁGINA
+     ================================================== -->
+    <footer>
+      <div class="wrap">
+        <a class="brand" href="#inicio"
+          ><small>La Pizzería</small
+          ><strong>DONDE <span>CÚCUTA</span></strong></a
+        >
+        <p>Un placer para su paladar.<br />© 2026 La Pizzería Donde Cúcuta</p>
+        <a href="#menu">Volver al menú ↑</a>
       </div>
+    </footer>
 
+    <!-- ==================================================
+     11. BOTÓN FLOTANTE DEL CARRITO
+     ================================================== -->
+    <button class="cart-trigger" id="open-cart" aria-haspopup="dialog">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        aria-hidden="true"
+      >
+        <path
+          d="M2 3h3l3 13h11l3-10H6M9 20h.01M18 20h.01"
+          stroke-linecap="round"
+        />
+        <circle cx="9" cy="20" r="1" />
+        <circle cx="18" cy="20" r="1" /></svg
+      >Mi pedido <span id="count" class="count">0</span>
+    </button>
+    <div class="toast" role="status" aria-live="polite" id="toast"></div>
 
-    </div>
-
-  </footer>
-
-
-  <!-- ========================================
-       WHATSAPP FLOTANTE
-       CAMBIAR NÚMERO
-       ======================================== -->
-
-  <a
-    class="whatsapp-flotante"
-    href="https://wa.me/573001234567"
-    target="_blank"
-    aria-label="WhatsApp"
-  >
-    ☎
-  </a>
-
-
-  <!-- ========================================
-       JAVASCRIPT
-       SOLO PARA MENÚ DE CELULAR
-       ======================================== -->
-
-  <script>
-
-    const botonMenu = document.getElementById("menuMovil");
-
-    const navegacion = document.getElementById("navLinks");
-
-
-    botonMenu.addEventListener("click", () => {
-
-      navegacion.classList.toggle("activo");
-
-    });
-
-
-    const linksMenu = document.querySelectorAll(".nav-links a");
-
-
-    linksMenu.forEach(link => {
-
-      link.addEventListener("click", () => {
-
-        navegacion.classList.remove("activo");
-
-      });
-
-    });
-
-  </script>
-
-<!-- SISTEMA DE PEDIDOS URBAN BURGER -->
-<style>
-  .btn-agregar {
-    display:block;width:100%;margin-top:15px;
-    padding:13px;border:0;border-radius:12px;
-    background:#f2b51d;color:#111;
-    font-weight:900;cursor:pointer;
-  }
-  .btn-carrito {
-    position:fixed;bottom:20px;left:20px;z-index:1050;
-    border:0;border-radius:30px;padding:15px 20px;
-    background:#f2b51d;color:#111;font-weight:900;
-    box-shadow:0 5px 25px #0009;cursor:pointer;
-  }
-  .fondo-carrito {
-    display:none;position:fixed;inset:0;
-    background:#000b;z-index:2000;
-  }
-  .fondo-carrito.visible {display:block}
-  .panel-carrito {
-    position:absolute;right:0;top:0;
-    width:min(100%,440px);height:100%;
-    overflow:auto;background:#151515;color:white;
-    padding:24px;border-left:1px solid #444;
-  }
-  .panel-carrito h2 {color:#f2b51d}
-  .cerrar-carrito {
-    float:right;background:none;border:0;
-    color:white;font-size:32px;cursor:pointer;
-  }
-  .linea-carrito {
-    display:flex;justify-content:space-between;
-    align-items:center;gap:12px;padding:14px 0;
-    border-bottom:1px solid #444;
-  }
-  .linea-carrito button {
-    padding:5px 11px;background:#333;
-    color:white;border:1px solid #555;
-    border-radius:7px;cursor:pointer;
-  }
-  .cantidad-controles {
-    display:flex;align-items:center;gap:8px;
-  }
-  .pedido-campo {display:block;margin:13px 0}
-  .pedido-campo input,
-  .pedido-campo select,
-  .pedido-campo textarea {
-    display:block;width:100%;margin-top:5px;
-    background:#252525;color:white;
-    border:1px solid #555;border-radius:10px;
-    padding:12px;font:inherit;
-  }
-  .total-carrito {
-    color:#f2b51d;font-size:24px;
-    font-weight:900;margin:20px 0;
-  }
-  .enviar-pedido {
-    width:100%;padding:16px;background:#25d366;
-    border:0;border-radius:12px;
-    font-weight:900;color:#092e19;cursor:pointer;
-  }
-
-.btn-carrito {
-  transition: background .2s ease, box-shadow .2s ease;
-}
-
-.btn-carrito:hover {
-  background: #ffd45c;
-  box-shadow: 0 8px 35px rgba(242,181,29,.4);
-}
-
-.btn-agregar:active {
-  transform: scale(.97);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn-carrito, .btn-agregar {
-    transition: none;
-  }
-}
-
-</style>
-
-<button class="btn-carrito" id="abrirPedido">
-  🛒 Carrito (<span id="contadorPedido">0</span>)
-</button>
-
-<div class="fondo-carrito" id="fondoPedido">
-  <div class="panel-carrito" role="dialog"
-       aria-modal="true" aria-label="Tu pedido">
-    <button class="cerrar-carrito"
-            id="cerrarPedido" aria-label="Cerrar">×</button>
-    <h2>🛒 Tu pedido</h2>
-    <div id="listaPedido"></div>
-    <p class="total-carrito">
-      Total productos: <span id="totalPedido">$0</span>
-    </p>
-
-    <form id="formularioPedido">
-      <label class="pedido-campo">
-        Nombre completo *
-        <input name="nombre" required maxlength="100">
-      </label>
-      <label class="pedido-campo">
-        Teléfono *
-        <input name="telefono" type="tel"
-               required maxlength="25">
-      </label>
-      <label class="pedido-campo">
-        Tipo de entrega
-        <select name="entrega" id="entregaPedido">
-          <option>Domicilio</option>
-          <option>Recoger en el local</option>
-        </select>
-      </label>
-      <label class="pedido-campo" id="campoDireccion">
-        Dirección *
-        <input name="direccion" id="direccionPedido"
-               required maxlength="180">
-      </label>
-      <label class="pedido-campo">
-        Medio de pago *
-        <select name="pago" required>
-          <option value="">Seleccionar</option>
-          <option>Efectivo</option>
-          <option>Transferencia</option>
-          <option>Datáfono (consultar)</option>
-        </select>
-      </label>
-      <label class="pedido-campo">
-        Observaciones
-        <textarea name="notas" rows="2"
-                  maxlength="300"></textarea>
-      </label>
-      <button class="enviar-pedido" type="submit">
-        ✅ Pedir por WhatsApp
+    <!-- ==================================================
+     12. VENTANA PARA PERSONALIZAR PRODUCTOS
+     ================================================== -->
+    <dialog id="custom" aria-labelledby="custom-title">
+      <button
+        class="close"
+        type="button"
+        data-close="custom"
+        aria-label="Cerrar personalización"
+      >
+        ×
       </button>
-      <p style="color:#aaa;font-size:12px;margin-top:12px">
-        WhatsApp abrirá el pedido preparado.
-        Pulsa Enviar para mandarlo al restaurante.
-        El domicilio y el pedido deben confirmarse.
+      <form id="custom-form">
+        <span class="eyebrow">Dale tu toque</span>
+        <h2 id="custom-title"></h2>
+        <p class="option-desc" id="custom-description"></p>
+        <div id="custom-options"></div>
+        <label class="field"
+          >Observaciones del producto<textarea
+            id="product-note"
+            maxlength="180"
+            rows="2"
+            placeholder="¿Alguna indicación para tu preparación?"
+          ></textarea>
+        </label>
+        <p class="custom-total" id="custom-total"></p>
+        <button class="button wide" type="submit">
+          Agregar al carrito <span aria-hidden="true">+</span>
+        </button>
+      </form>
+    </dialog>
+
+    <!-- ==================================================
+     13. CARRITO Y FORMULARIO DEL PEDIDO
+     ================================================== -->
+    <dialog id="cart" aria-labelledby="cart-title">
+      <button
+        class="close"
+        type="button"
+        data-close="cart"
+        aria-label="Cerrar pedido"
+      >
+        ×</button
+      ><span class="eyebrow">Casi listo</span>
+      <h2 id="cart-title">Tu pedido</h2>
+      <div id="cart-items"></div>
+      <p class="cart-total">Subtotal: <span id="cart-total">$0</span></p>
+      <p class="small">
+        El valor del domicilio y la disponibilidad se confirman con el
+        restaurante.
       </p>
-    </form>
-  </div>
-</div>
+      <form id="checkout" class="checkout">
+        <label class="field"
+          >Nombre completo *<input
+            name="nombre"
+            required
+            maxlength="100"
+            autocomplete="name" /></label
+        ><label class="field"
+          >Teléfono *<input
+            name="telefono"
+            type="tel"
+            required
+            maxlength="25"
+            autocomplete="tel" /></label
+        ><label class="field"
+          >Tipo de entrega<select name="entrega" id="delivery">
+            <option>Domicilio</option>
+            <option>Recoger en el local</option>
+          </select></label
+        ><label class="field" id="address-field"
+          >Dirección *<input
+            name="direccion"
+            id="address"
+            required
+            maxlength="180"
+            autocomplete="street-address" /></label
+        ><label class="field"
+          >Medio de pago *<select name="pago" required>
+            <option value="">Seleccionar</option>
+            <option>Efectivo</option>
+            <option>Transferencia</option>
+            <option>Datáfono (consultar)</option>
+          </select></label
+        ><label class="field"
+          >Observaciones del pedido<textarea
+            name="notas"
+            rows="2"
+            maxlength="300"
+          ></textarea></label
+        ><button class="button wide send" id="send" type="submit">
+          Pedir por WhatsApp ↗
+        </button>
+        <p class="small">
+          Se abrirá WhatsApp con tu pedido. Pulsa Enviar para mandarlo y espera
+          la confirmación del restaurante.
+        </p>
+      </form>
+    </dialog>
 
-<script>
-(() => {
-  // NÚMERO DEL RESTAURANTE PARA LOS PEDIDOS
-  const whatsapp = "573144073259";
-
-  const moneda = n => new Intl.NumberFormat("es-CO", {
-    style:"currency",currency:"COP",
-    maximumFractionDigits:0
-  }).format(n);
-
-  const productos = [];
-  const carrito = new Map();
-
-  const fondo = document.getElementById("fondoPedido");
-  const listado = document.getElementById("listaPedido");
-  const totalElemento = document.getElementById("totalPedido");
-  const contador = document.getElementById("contadorPedido");
-
-  document.querySelectorAll("article.producto")
-    .forEach((tarjeta) => {
-      const nombre = tarjeta.querySelector("h3")?.textContent.trim();
-      const precioTexto = tarjeta.querySelector(".precio")?.textContent || "";
-      const precio = Number(precioTexto.replace(/\D/g,""));
-      if (!nombre || !precio) return;
-
-      const id = productos.length;
-      productos.push({nombre,precio});
-
-      const boton = document.createElement("button");
-      boton.className = "btn-agregar";
-      boton.type = "button";
-      boton.textContent = "🛒 Agregar al carrito";
-      boton.addEventListener("click", () => {
-        carrito.set(id,(carrito.get(id)||0)+1);
-        actualizar();
-        animarProducto(tarjeta, boton);
-      });
-      tarjeta.querySelector(".producto-info").append(boton);
-    });
-
-function animarProducto(tarjeta, boton) {
-  const carritoBoton = document.getElementById("abrirPedido");
-  const imagen = tarjeta.querySelector(".producto-imagen img");
-
-  const textoOriginal = boton.textContent;
-  boton.textContent = "✓ Añadido";
-
-  setTimeout(() => {
-    boton.textContent = textoOriginal;
-  }, 850);
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return;
-  }
-
-  if (imagen) {
-    const origen = imagen.getBoundingClientRect();
-    const destino = carritoBoton.getBoundingClientRect();
-
-    const miniatura = imagen.cloneNode(true);
-
-    Object.assign(miniatura.style, {
-      position: "fixed",
-      left: origen.left + origen.width / 2 - 35 + "px",
-      top: origen.top + origen.height / 2 - 35 + "px",
-      width: "70px",
-      height: "70px",
-      objectFit: "cover",
-      borderRadius: "16px",
-      zIndex: "3000",
-      pointerEvents: "none",
-      boxShadow: "0 8px 25px #0009"
-    });
-
-    document.body.appendChild(miniatura);
-
-    const dx = destino.left + destino.width / 2 -
-      (origen.left + origen.width / 2);
-
-    const dy = destino.top + destino.height / 2 -
-      (origen.top + origen.height / 2);
-
-    miniatura.animate([
-      {
-        transform: "translate(0,0) scale(1)",
-        opacity: 1,
-        offset: 0
-      },
-      {
-        transform: `translate(${dx * 0.5}px,${dy * 0.5 - 110}px) scale(.7)`,
-        opacity: 1,
-        offset: .55
-      },
-      {
-        transform: `translate(${dx}px,${dy}px) scale(.15)`,
-        opacity: 0,
-        offset: 1
-      }
-    ], {
-      duration: 750,
-      easing: "ease-in-out"
-    }).finished.then(() => miniatura.remove())
-      .catch(() => miniatura.remove());
-  }
-
-  carritoBoton.animate([
-    { transform: "scale(1)" },
-    { transform: "scale(1.18)" },
-    { transform: "scale(1)" }
-  ], {
-    duration: 400,
-    delay: 650,
-    easing: "ease-out"
-  });
-}
-
-  function abrir() {
-    fondo.classList.add("visible");
-    document.getElementById("cerrarPedido").focus();
-  }
-
-  function cerrar() {
-    fondo.classList.remove("visible");
-    document.getElementById("abrirPedido").focus();
-  }
-
-  document.getElementById("abrirPedido")
-    .addEventListener("click",abrir);
-  document.getElementById("cerrarPedido")
-    .addEventListener("click",cerrar);
-  fondo.addEventListener("click",e => {
-    if(e.target === fondo) cerrar();
-  });
-  document.addEventListener("keydown",e => {
-    if(e.key === "Escape") cerrar();
-  });
-
-  function cambiar(id,variacion) {
-    const n = (carrito.get(id)||0)+variacion;
-    if(n <= 0) carrito.delete(id);
-    else carrito.set(id,n);
-    actualizar();
-  }
-
-  function actualizar() {
-    listado.replaceChildren();
-    let total = 0;
-    let cantidad = 0;
-
-    if(carrito.size === 0) {
-      const aviso = document.createElement("p");
-      aviso.textContent = "Tu carrito está vacío.";
-      listado.append(aviso);
-    }
-
-    carrito.forEach((n,id) => {
-      const p = productos[id];
-      total += p.precio*n;
-      cantidad += n;
-
-      const fila = document.createElement("div");
-      fila.className = "linea-carrito";
-      const datos = document.createElement("div");
-      const controles = document.createElement("div");
-      controles.className = "cantidad-controles";
-
-      const nombre = document.createElement("strong");
-      nombre.textContent = p.nombre;
-      const subtotal = document.createElement("p");
-      subtotal.textContent = moneda(p.precio*n);
-      datos.append(nombre,subtotal);
-
-      const menos = document.createElement("button");
-      menos.type = "button";
-      menos.textContent = "−";
-      menos.onclick = () => cambiar(id,-1);
-
-      const numero = document.createElement("span");
-      numero.textContent = n;
-
-      const mas = document.createElement("button");
-      mas.type = "button";
-      mas.textContent = "+";
-      mas.onclick = () => cambiar(id,1);
-
-      controles.append(menos,numero,mas);
-      fila.append(datos,controles);
-      listado.append(fila);
-    });
-
-    contador.textContent = cantidad;
-    totalElemento.textContent = moneda(total);
-  }
-
-  const entrega = document.getElementById("entregaPedido");
-  const direccion = document.getElementById("direccionPedido");
-
-  entrega.addEventListener("change",() => {
-    const domicilio = entrega.value === "Domicilio";
-    document.getElementById("campoDireccion").hidden = !domicilio;
-    direccion.required = domicilio;
-  });
-
-  document.getElementById("formularioPedido")
-    .addEventListener("submit",e => {
-      e.preventDefault();
-
-      if(carrito.size === 0) {
-        alert("Primero agrega productos al carrito.");
-        return;
-      }
-
-      const d = new FormData(e.currentTarget);
-      let total = 0;
-      const lineas = [];
-
-      carrito.forEach((n,id) => {
-        const p = productos[id];
-        const subtotal = n*p.precio;
-        total += subtotal;
-        lineas.push(
-          `${n} x ${p.nombre}: ${moneda(subtotal)}`
-        );
-      });
-
-      const mensaje = [
-        "🍔 *NUEVO PEDIDO - URBAN BURGER*",
-        "",
-        "*PRODUCTOS*",
-        ...lineas,
-        "",
-        `*Subtotal:* ${moneda(total)}`,
-        "*Domicilio:* Por confirmar",
-        "",
-        `*Nombre:* ${d.get("nombre")}`,
-        `*Teléfono:* ${d.get("telefono")}`,
-        `*Entrega:* ${d.get("entrega")}`,
-        ...(d.get("entrega")==="Domicilio"
-          ? [`*Dirección:* ${d.get("direccion")}`] : []),
-        `*Pago:* ${d.get("pago")}`,
-        `*Observaciones:* ${d.get("notas")||"Ninguna"}`,
-        "",
-        "Por favor, confirma disponibilidad",
-        "y el total final del pedido. ¡Gracias!"
-      ].join("\n");
-
-      window.location.href =
-        `https://wa.me/${whatsapp}?text=${encodeURIComponent(mensaje)}`;
-    });
-
-  // Actualizar también el botón flotante de contacto
-  const contacto = document.querySelector(".whatsapp-flotante");
-  if(contacto) contacto.href = `https://wa.me/${whatsapp}`;
-
-  actualizar();
-})();
-</script>
-<!-- FIN SISTEMA DE PEDIDOS -->
-
-
-</body>
+    <!-- ==================================================
+     14. FUNCIONAMIENTO: CATÁLOGO, CARRITO Y WHATSAPP
+     ================================================== -->
+    <script src="pedidos.js"></script>
+  </body>
 </html>
