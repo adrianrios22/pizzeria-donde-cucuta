@@ -1343,9 +1343,9 @@
       }
 
       /* ===== LOGOTIPO Y CONFIRMACIÓN VISUAL DEL PEDIDO ===== */
-      .brand-with-logo { display: flex; align-items: center; gap: 10px; }
+      .brand.brand-with-logo { display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; gap: 10px; }
       .brand-logo { width: 64px; height: 64px; object-fit: contain; flex-shrink: 0; border-radius: 50%; }
-      .brand-name { display: block; }
+      .brand-name { display: flex; flex-direction: column; min-width: 0; }
       #order-ready { width: min(420px, calc(100% - 32px)); text-align: center;
         color: white; background: #211b1b99; border: 1px solid #ffffff66;
         backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
